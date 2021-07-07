@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraController : MonoBehaviour
+{
+    public static CameraController instance;
+
+    public Transform target;
+
+    private float startFOV, targetFOV;
+
+    public float zoomSpeed = 1f;
+
+    public Camera theCam;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        startFOV = theCam.fieldOfView;
+        targetFOV = theCam.fieldOfView;
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        transform.position = target.position;
+        transform.rotation = target.rotation;
+
+        theCam.fieldOfView = Mathf.Lerp(theCam.fieldOfView, targetFOV, zoomSpeed * Time.deltaTime);                         //moves from certain value to end value in increments
+    }
+
+    public void ZoomIn(float newZoom)
+    {
+        targetFOV = newZoom;
+    }
+
+    public void ZoomOut()
+    {
+        targetFOV = startFOV;
+
+    }
+}
